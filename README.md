@@ -29,10 +29,10 @@ This tutorial is designed for beginners and students interested in learning how 
 3.  **Run the Scripts:**
     -   Place your suspect DNA FASTA files in the same directory.
     -   Run the scripts in the following order:
-        1.  `python load_sequences.py`
-        2.  `python analyze_results.py`
-        3.  `python generate_report.py`
-        4.  `python graphs.py`
+        1.  `load_sequences.py`
+        2.  `analyze_results.py`
+        3.  `generate_report.py`
+        4.  `graphs.py`
 4.  **View the Results:** The analysis results will be generated in the report and graphs.
 
 ## Example Usage
