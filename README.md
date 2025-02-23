@@ -6,7 +6,7 @@ This tutorial provides a hands-on introduction to forensic DNA analysis using bi
 
 ## Purpose
 
-This tutorial is designed for beginners and students interested in learning how to apply bioinformatics to forensic science. By following this tutorial, you will gain practical experience in:
+This tutorial is designed for beginners and those interested in learning how to apply bioinformatics to forensic science. By following this tutorial, you will gain practical experience in:
 
 -   Loading and processing DNA sequences.
 -   Analyzing and comparing DNA samples.
