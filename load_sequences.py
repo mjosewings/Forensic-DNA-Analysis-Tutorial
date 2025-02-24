@@ -3,57 +3,52 @@ from Bio import SeqIO
 
 def load_fasta_sequences(data_dir, fasta_files):
     """
-    Load multiple FASTA files and return a dictionary of sequences.
+    This function reads FASTA files and extracts the DNA sequences.
 
-    Parameters:
-    - data_dir (str): Directory containing the FASTA files.
-    - fasta_files (list): List of FASTA filenames to load.
-
-    Returns:
-    - dict: Keys are filenames, values are sequence strings.
+    It takes the directory where the files are located and a list of filenames as input.
+    It returns a dictionary where the keys are the filenames and the values are the DNA sequences.
     """
-    sequences = {}
+    sequences = {}  # Create an empty dictionary to store the sequences
 
-    for file in fasta_files:
-        path = os.path.join(data_dir, file)
+    for file in fasta_files:  # Loop through each filename
+        path = os.path.join(data_dir, file)  # Create the full path to the file
 
-        try:
-            with open(path, "r") as f:
-                for record in SeqIO.parse(f, "fasta"):
-                    sequences[file] = str(record.seq)  # Store sequence as string
-        except FileNotFoundError:
+        try:  # Try to open and read the file
+            with open(path, "r") as f:  # Open the file for reading
+                for record in SeqIO.parse(f, "fasta"):  # Use Bio.SeqIO to parse the FASTA file
+                    sequences[file] = str(record.seq)  # Extract the sequence and store it in the dictionary
+        except FileNotFoundError:  # If the file is not found
             print(f"Warning: {file} not found in {data_dir}.")
-        except Exception as e: # Catch other potential Bio.SeqIO parse errors
+        except Exception as e:  # If there's another error during parsing
             print(f"Error parsing {file}: {e}")
 
-    return sequences
+    return sequences  # Return the dictionary of sequences
 
 
 def process_fasta_loading(data_dir="dataset", fasta_files=None):
-    """Loads FASTA sequences from a directory and prints summaries.
+    """
+    This function loads FASTA sequences and prints a summary.
 
-    Args:
-        data_dir (str): The directory containing the FASTA files (default: "dataset").
-        fasta_files (list, optional): A list of specific FASTA files to load.
-                                     If None, all .fasta files in the directory are loaded.
+    It takes the directory containing the FASTA files and an optional list of filenames.
+    If no filenames are provided, it loads all .fasta files in the directory.
+    It then prints the number of bases (characters) in each sequence.
     """
     try:
-        if fasta_files is None:  # Load all fasta files in the directory if file list not given
-            fasta_files = [f for f in os.listdir(data_dir) if f.endswith(".fasta")]
+        if fasta_files is None:  # If no list of files is given
+            fasta_files = [f for f in os.listdir(data_dir) if f.endswith(".fasta")]  # Find all .fasta files
 
-        sequences = load_fasta_sequences(data_dir, fasta_files)
+        sequences = load_fasta_sequences(data_dir, fasta_files)  # Load the sequences
 
-        for filename, sequence in sequences.items():
-            print(f"{filename}: {len(sequence)} bases loaded.")
+        for filename, sequence in sequences.items():  # Loop through the sequences
+            print(f"{filename}: {len(sequence)} bases loaded.")  # Print the filename and sequence length
 
-    except FileNotFoundError:
+    except FileNotFoundError:  # If the directory is not found
         print(f"Error: Directory '{data_dir}' not found.")
-    except Exception as e:
+    except Exception as e:  # If another error occurs
         print(f"An unexpected error occurred: {e}")
 
 
-# Example usage (remove or comment out when using as a module):
-# if __name__ == "__main__":
-#     process_fasta_loading()  # Uses default directory and loads all .fasta files
-#     # Or specify the directory and a list of files:
-#     # process_fasta_loading(data_dir="my_data", fasta_files=["seq1.fasta", "seq2.fasta"])
+# Example usage (now always runs when the script is executed):
+process_fasta_loading()  # Uses default directory "dataset" and loads all .fasta files in it.  Make sure you have a folder called 'dataset' with .fasta files in it.
+# To use a different directory and specific files, uncomment and modify the lines below:
+# process_fasta_loading(data_dir="my_data", fasta_files=["seq1.fasta", "seq2.fasta"])  # Replace with your directory and filenames. Make sure the files are in the directory.
