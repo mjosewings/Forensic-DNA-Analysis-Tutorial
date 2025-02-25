@@ -21,7 +21,7 @@ def analyze_results(alignments, filename):
     similarity_score = best_alignment[2] / best_alignment[4]  # Matches / Alignment length
     return {"filename": filename, "similarity_score": similarity_score}
 
-def process_and_analyze(data_directory="suspects/", crime_scene_file="crime_scene_dna.fasta"):
+def process_and_analyze(data_directory="suspects", crime_scene_file="crime_scene_dna.fasta"):
     """
     Loads sequences from the 'suspects' folder, aligns them to the crime scene, and analyzes the results.
 

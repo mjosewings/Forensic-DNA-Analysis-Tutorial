@@ -20,6 +20,7 @@ This tutorial is designed for beginners and those interested in learning how to 
 -   `analyze_results.py`: A Python script to analyze and compare DNA sequences.
 -   `generate_report.py`: A Python script to generate a report of the DNA analysis results.
 -   `graphs.py`: A Python script to generate visualizations of the DNA analysis results.
+-   `align_sequences.py`: A Python script to align DNA sequences.
 -   `README.md`: This file, providing an overview of the tutorial.
 
 ## How to Use
@@ -30,10 +31,11 @@ This tutorial is designed for beginners and those interested in learning how to 
     -   Place your suspect DNA FASTA files in the same directory.
     -   Run the scripts in the following order:
         1.  `load_sequences.py`
-        2.  `analyze_results.py`
-        3.  `generate_report.py`
-        4.  `graphs.py`
-4.  **View the Results:** The analysis results will be generated in the report and graphs.
+        2.  `align_sequences.py`
+        3.  `analyze_results.py`
+        4.  `generate_report.py`
+        5.  `graphs.py`
+4.  **View the Results:** The analysis results will be generated in the report titled *alignment_report.txt* and graphs of the *graphs* folder.
 
 ## Example Usage
 
