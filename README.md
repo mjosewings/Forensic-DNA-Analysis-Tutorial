@@ -26,7 +26,7 @@ This tutorial is designed for beginners and those interested in learning how to 
 ## How to Use
 
 1.  **Clone the Repository:** Clone this repository to your local machine.
-2.  **Install Dependencies:** Ensure you have Python and the necessary libraries (e.g., Biopython) installed. Refer to the [Forensic DNA Analysis Using Bioinformatics: A Hands-On Introduction](https://github.com/mjosewings/Forensic-DNA-Analysis-Tutorial/blob/main/Forensic%20DNA%20Analysis%20Using%20Bioinformatics-%20A%20Hands-On%20Introduction.pdf) manual for detailed setup instructions.
+2.  **Install Dependencies:** Ensure you have Python and the necessary libraries (e.g., Biopython) installed. Refer to the [Forensic DNA Analysis Using Bioinformatics: A Hands-On Introduction]() manual for detailed setup instructions.
 3.  **Run the Scripts:**
     -   Place your suspect DNA FASTA files in the same directory.
     -   Run the scripts in the following order:
@@ -43,5 +43,5 @@ To analyze the provided `crime_scene_dna.fasta` file, simply run the scripts as 
 
 ## Troubleshooting
 
-For detailed troubleshooting, please refer to the [Forensic DNA Analysis Using Bioinformatics: A Hands-On Introduction](https://github.com/mjosewings/Forensic-DNA-Analysis-Tutorial/blob/main/Forensic%20DNA%20Analysis%20Using%20Bioinformatics-%20A%20Hands-On%20Introduction.pdf) manual. Common issues include file path errors and missing dependencies.
+For detailed troubleshooting, please refer to the [Forensic DNA Analysis Using Bioinformatics: A Hands-On Introduction]() manual. Common issues include file path errors and missing dependencies.
 
