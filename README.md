@@ -24,7 +24,6 @@ This tutorial is designed for beginners and those interested in learning how to 
 -   `README.md`: This file, providing an overview of the tutorial.
 
 ## How to Use
-
 1.  **Clone the Repository:** Clone this repository to your local machine.
 2.  **Install Dependencies:** Ensure you have Python and the necessary libraries (e.g., Biopython) installed. Refer to the [Forensic DNA Analysis Using Bioinformatics: A Hands-On Introduction]() manual for detailed setup instructions.
 3.  **Run the Scripts:**
