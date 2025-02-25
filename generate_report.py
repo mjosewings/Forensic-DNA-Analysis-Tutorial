@@ -7,15 +7,12 @@ import seaborn as sns
 import pandas as pd
 import os
 
+REPORT_FILE = "alignment_report.txt"
+GRAPH_FILE = "graphs/dna_similarity_graph.png"
+MATCH_THRESHOLD = 0.9
 
-def generate_report(results, output_file="alignment_report.txt"):
-    """
-    Generate a report summarizing the alignment results.
-
-    Parameters:
-    - results (list): List of dictionaries containing filenames and similarity scores.
-    - output_file (str): Path to save the report.
-    """
+def generate_report(results, output_file=REPORT_FILE):
+    """Generates a report summarizing alignment results."""
     with open(output_file, "w") as f:
         f.write("Crime Scene DNA Comparison Report\n")
         f.write("=================================\n\n")
@@ -26,60 +23,50 @@ def generate_report(results, output_file="alignment_report.txt"):
     print(f"Report generated: {output_file}")
 
 
-def generate_seaborn_graph(results, output_file="graphs/dna_similarity_graph.png"):
-    """
-    Generate a bar graph visualizing the similarity scores using Seaborn.
-
-    Parameters:
-    - results (list): List of dictionaries containing filenames and similarity scores.
-    - output_file (str): Path to save the graph.
-    """
-    # Prepare data for the DataFrame
+def generate_seaborn_graph(results, output_file=GRAPH_FILE):
+    """Generates a bar graph visualizing similarity scores."""
     data = {
         'Suspect': [result['filename'].replace('.fasta', '') for result in results],
-        'similarity_score': [result['similarity_score'] * 100 for result in results],  # Convert to percentage
-        'Match': ['MATCH' if result['similarity_score'] >= 0.9 else 'NO MATCH' for result in results]
+        'Similarity (%)': [result['similarity_score'] * 100 for result in results],
+        'Match': ['MATCH' if result['similarity_score'] >= MATCH_THRESHOLD else 'NO MATCH' for result in results]
     }
-
     df = pd.DataFrame(data)
 
-    # Assign colors based on match status
     color_palette = {'MATCH': 'green', 'NO MATCH': 'red'}
 
-    # Plotting with Seaborn
     plt.figure(figsize=(10, 6))
-    sns.barplot(x='Suspect', y='similarity_score', hue='Match', data=df, palette=color_palette, dodge=False)
-    plt.axhline(y=90, color='blue', linestyle='--', label="90% Match Threshold")
+    sns.barplot(x='Suspect', y='Similarity (%)', hue='Match', data=df, palette=color_palette, dodge=False)
+    plt.axhline(y=MATCH_THRESHOLD * 100, color='blue', linestyle='--', label=f"{MATCH_THRESHOLD * 100}% Match Threshold")
 
     plt.title("DNA Similarity Scores with Crime Scene")
     plt.xlabel("Suspects")
-    plt.ylabel("Similarity Score (%)")
+    plt.ylabel("Similarity (%)")
     plt.legend(title="Match Status")
     plt.tight_layout()
 
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
     plt.savefig(output_file)
     plt.show()
 
-
-def process_dna_analysis(crime_scene_file="crime_scene_dna.fasta", suspects_dir="suspects"):
+def process_dna_analysis(data_directory="suspects", crime_scene_file="crime_scene_dna.fasta"):
     """
-    Processes DNA analysis by aligning crime scene DNA with suspects' DNA from FASTA files in a directory.
+    Processes DNA analysis by aligning crime scene DNA with suspects' DNA from FASTA files in a directory, generates a report, and creates a graph.
 
     Args:
+        data_directory (str): The directory containing the suspects' DNA FASTA files (defaults to "suspects/").
         crime_scene_file (str): The filename of the crime scene DNA FASTA file.
-        suspects_dir (str): The directory containing the suspects' DNA FASTA files.
     """
     try:
-        fasta_filenames = [f for f in os.listdir(suspects_dir) if f.endswith(".fasta")]
-        sequences = load_fasta_sequences(suspects_dir, fasta_filenames + [crime_scene_file])  # Include crime scene file
+        fasta_filenames = [f for f in os.listdir(data_directory) if f.endswith(".fasta")]
+        sequences = load_fasta_sequences(data_directory, fasta_filenames + [crime_scene_file])
 
         crime_scene_seq = sequences.get(crime_scene_file)
         if not crime_scene_seq:
-            raise ValueError(f"Crime scene sequence file '{crime_scene_file}' not found.")
+            raise ValueError(f"Error: Crime scene sequence file '{crime_scene_file}' not found.")
 
         results = []
         for filename, suspect_seq in sequences.items():
-            if filename != crime_scene_file:  # Compare with all suspects
+            if filename != crime_scene_file:
                 alignments = align_sequences(crime_scene_seq, suspect_seq)
                 result = analyze_results(alignments, filename)
                 results.append(result)
@@ -92,12 +79,11 @@ def process_dna_analysis(crime_scene_file="crime_scene_dna.fasta", suspects_dir=
         generate_seaborn_graph(results)
 
     except FileNotFoundError:
-        print(f"Error: Directory '{suspects_dir}' not found.")
+        print(f"Error: Directory '{data_directory}' not found.")
     except ValueError as e:
         print(f"Error: {e}")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
-# Example of how to use the function:
-# process_dna_analysis() # Uses default filenames and directory
-# process_dna_analysis(crime_scene_file="my_crime_scene.fasta", suspects_dir="dna_profiles") # Specify files
+# Example usage:
+process_dna_analysis()

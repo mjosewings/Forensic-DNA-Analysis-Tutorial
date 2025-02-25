@@ -19,7 +19,7 @@ def generate_suspect_samples(num_suspects=3):
 crime_scene_dna = generate_crime_scene_sample()
 suspect_dna_samples = generate_suspect_samples()
 
-with open('crime_scene_dna.fasta', 'w') as file:
+with open('suspects/crime_scene_dna.fasta', 'w') as file:
     file.write(crime_scene_dna + '\n')
     file.write('\n'.join(suspect_dna_samples))
 

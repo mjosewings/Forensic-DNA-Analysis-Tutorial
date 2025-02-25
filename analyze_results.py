@@ -7,36 +7,35 @@ def analyze_results(alignments, filename):
     """
     Analyze alignment results and determine similarity score.
 
-    Parameters:
-    - alignments (list): List of alignments.
-    - filename (str): Filename of the suspect's DNA sequence.
+    Args:
+        alignments (list): List of alignments.
+        filename (str): Filename of the suspect's DNA sequence.
 
     Returns:
-    - dict: Filename and similarity score.
+        dict: Filename and similarity score.
     """
-    if not alignments: # Handle cases where there are no alignments
-        return {"filename": filename, "similarity_score": 0.0}  # Or another appropriate default
+    if not alignments: #Handle the case where there are no alignments
+        return {"filename": filename, "similarity_score": 0.0}
 
     best_alignment = alignments[0]
-    similarity_score = best_alignment[2] / best_alignment[4] if best_alignment[4] else 0.0 # Avoid division by zero
+    similarity_score = best_alignment[2] / best_alignment[4]  # Matches / Alignment length
     return {"filename": filename, "similarity_score": similarity_score}
 
-
-def process_dna_alignment(crime_scene_file="crime_scene_dna.fasta", suspects_dir="dataset"):
+def process_and_analyze(data_directory="suspects/", crime_scene_file="crime_scene_dna.fasta"):
     """
-    Processes DNA alignment by comparing a crime scene sequence to suspects' sequences.
+    Loads sequences from the 'suspects' folder, aligns them to the crime scene, and analyzes the results.
 
     Args:
-        crime_scene_file (str): Filename of the crime scene FASTA file.
-        suspects_dir (str): Directory containing the suspects' FASTA files.
+        data_directory (str): The directory containing the suspect FASTA files.
+        crime_scene_file (str): The filename of the crime scene DNA FASTA file.
     """
     try:
-        fasta_files = [f for f in os.listdir(suspects_dir) if f.endswith(".fasta")]
-        sequences = load_fasta_sequences(suspects_dir, fasta_files + [crime_scene_file])
+        fasta_filenames = [f for f in os.listdir(data_directory) if f.endswith(".fasta")]
+        sequences = load_fasta_sequences(data_directory, fasta_filenames + [crime_scene_file])
 
         crime_scene_seq = sequences.get(crime_scene_file)
         if not crime_scene_seq:
-            raise ValueError(f"Crime scene sequence file '{crime_scene_file}' not found.")
+            raise ValueError(f"Error: Crime scene sequence '{crime_scene_file}' not found!")
 
         results = []
         for filename, suspect_seq in sequences.items():
@@ -46,20 +45,18 @@ def process_dna_alignment(crime_scene_file="crime_scene_dna.fasta", suspects_dir
                 results.append(result)
 
                 print(f"\nAlignment between Crime Scene and {filename}:")
-                if alignments: # Print only if there are alignments
+                if alignments:
                     print(format_alignment(*alignments[0]))
                 else:
-                    print("No alignments found.")
+                    print ("No Alignments found")
                 print(f"Similarity Score: {result['similarity_score']:.2f}")
 
     except FileNotFoundError:
-        print(f"Error: Directory '{suspects_dir}' not found.")
+        print(f"Error: Directory '{data_directory}' not found.")
     except ValueError as e:
-        print(f"Error: {e}")
+        print(e)
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
-# Example usage (remove or comment out when using as a module):
-# if __name__ == "__main__":
-#     process_dna_alignment() # Uses default file names and directory
-#     # process_dna_alignment(crime_scene_file="my_crime_scene.fasta", suspects_dir="my_suspects")
+# Example usage (will run when the script is executed):
+process_and_analyze()
